@@ -17,7 +17,7 @@ export default defineConfig({
     proxy: {
       // Forward all /api calls to Express in development
       '/api': {
-        target:       'http://localhost:5000',
+        target:       import.meta.env.VITE_API_URL || 'http://localhost:5000',
         changeOrigin: true,
       },
     },
