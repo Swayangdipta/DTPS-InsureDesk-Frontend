@@ -143,9 +143,9 @@ export default function BulkImport({ open, onClose }) {
       cleaned[k] = v;
     });
     // Normalise status enums (case-insensitive match)
-    const PAYMENT = { paid:'Paid', unpaid:'Unpaid', bounced:'Bounced', partial:'Partial' };
-    const BOND    = { pending:'Pending', received:'Received', dispatched:'Dispatched', na:'NA' };
-    const PAYOUT  = { due:'Due', paid:'Paid', na:'NA' };
+    const PAYMENT = { paid:'Paid', unpaid:'Unpaid', bounced:'Bounced', partial:'Partial', returned:'Returned', dtps:'Dtps' };
+    const BOND    = { pending:'Pending', received:'Received', dispatched:'Dispatched', na:'NA', issued:'Issued', returned:'Returned', hold:'Hold' };
+    const PAYOUT  = { due:'Due', paid:'Paid', na:'NA', unpaid:'Unpaid', returned:'Returned' };
     if (cleaned.paymentStatus) cleaned.paymentStatus = PAYMENT[cleaned.paymentStatus.toLowerCase()] ?? cleaned.paymentStatus;
     if (cleaned.bondStatus)    cleaned.bondStatus    = BOND[cleaned.bondStatus.toLowerCase()]    ?? cleaned.bondStatus;
     if (cleaned.payoutStatus)  cleaned.payoutStatus  = PAYOUT[cleaned.payoutStatus.toLowerCase()] ?? cleaned.payoutStatus;
