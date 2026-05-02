@@ -133,10 +133,31 @@ export default function BulkImport({ open, onClose }) {
   };
 
   // ── Submit to backend ─────────────────────────────────
+  // Strip undefined / null / empty-string values from each row so Joi
+  // never sees absent-but-present keys. Also normalise status fields
+  // that might have come from Excel with wrong capitalisation.
+  const cleanRow = (row) => {
+    const cleaned = {};
+    Object.entries(row).forEach(([k, v]) => {
+      if (v === undefined || v === null || v === '') return;
+      cleaned[k] = v;
+    });
+    // Normalise status enums (case-insensitive match)
+    const PAYMENT = { paid:'Paid', unpaid:'Unpaid', bounced:'Bounced', partial:'Partial' };
+    const BOND    = { pending:'Pending', received:'Received', dispatched:'Dispatched', na:'NA' };
+    const PAYOUT  = { due:'Due', paid:'Paid', na:'NA' };
+    if (cleaned.paymentStatus) cleaned.paymentStatus = PAYMENT[cleaned.paymentStatus.toLowerCase()] ?? cleaned.paymentStatus;
+    if (cleaned.bondStatus)    cleaned.bondStatus    = BOND[cleaned.bondStatus.toLowerCase()]    ?? cleaned.bondStatus;
+    if (cleaned.payoutStatus)  cleaned.payoutStatus  = PAYOUT[cleaned.payoutStatus.toLowerCase()] ?? cleaned.payoutStatus;
+    return cleaned;
+  };
+
   const handleImport = async () => {
     setLoading(true);
     try {
-      const valid = rows.filter(r => r.policyHolderName && r.category);
+      const valid = rows
+        .filter(r => r.policyHolderName && r.category)
+        .map(cleanRow);
       await policyApi.bulkImport({ policies: valid });
       qc.invalidateQueries({ queryKey: ['policies'] });
       toast.success(`${valid.length} policies imported successfully!`);
