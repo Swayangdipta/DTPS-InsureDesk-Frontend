@@ -5,6 +5,7 @@ import Header         from './Header';
 import SunMoonEffect  from '@/components/common/SunMoonEffect';
 import useMasterStore from '@/store/masterStore';
 import useUIStore     from '@/store/uiStore';
+import PolicyForm     from '@/components/policy/PolicyForm';
 
 export default function Layout() {
   const fetchAll    = useMasterStore((s) => s.fetchAll);
@@ -38,6 +39,8 @@ export default function Layout() {
           <SunMoonEffect />
         </div>
       </div>
+
+      <PolicyForm />
     </div>
   );
 }

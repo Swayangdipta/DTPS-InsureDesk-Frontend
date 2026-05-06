@@ -4,7 +4,6 @@ import usePolicyStore   from '@/store/policyStore';
 import useUIStore       from '@/store/uiStore';
 import useDebounce      from '@/hooks/useDebounce';
 import PolicyTable      from '@/components/policy/PolicyTable';
-import PolicyForm       from '@/components/policy/PolicyForm';
 import BulkImport       from '@/components/policy/BulkImport';
 import FilterDrawer     from '@/components/filters/FilterDrawer';
 import FilterChips      from '@/components/filters/FilterChips';
@@ -107,7 +106,6 @@ export default function PoliciesPage() {
       />
 
       {/* Modals */}
-      <PolicyForm />
       <BulkImport open={bulkImportOpen} onClose={() => setBulkImportOpen(false)} />
       <FilterDrawer />
     </div>
